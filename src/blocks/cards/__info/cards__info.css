@@ -1,0 +1,9 @@
+
+.cards__info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 0 0 10px 10px;
+}

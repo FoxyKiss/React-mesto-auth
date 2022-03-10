@@ -1,0 +1,24 @@
+.header {
+  max-width: 880px;
+  width: 100%;
+  min-height: 74px;
+  overflow: hidden;
+  background: url(../../images/logo.svg);
+  background-repeat: no-repeat;
+  background-size: 142px 33px;
+  background-position: top left;
+  border-bottom: 1px solid #545454;
+  margin: 45px 0 40px 0;
+}
+
+@media screen and (max-width: 924px) {
+  .header {
+      max-width: 585px;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .header {
+      max-width: 320px;
+  }
+}

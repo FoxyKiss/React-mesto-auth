@@ -1,0 +1,8 @@
+.profile__avatar-container {
+  position: relative;
+  max-width: 120px;
+  width: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  margin: 0 auto 0 auto;
+}

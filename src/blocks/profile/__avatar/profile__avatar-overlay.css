@@ -1,0 +1,12 @@
+.profile__avatar-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  transition: 0.5s;
+}
+
+.profile__avatar-overlay:hover{
+  background: rgba(0, 0, 0, 0.8);
+}

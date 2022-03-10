@@ -1,0 +1,7 @@
+.cards {
+  max-width: 880px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 66px 0;
+}

@@ -1,0 +1,14 @@
+.cards__list_element {
+  position: relative;
+  max-width: 282px;
+  width: 100%;
+  min-height: 361px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width:600px) {
+  .cards__list_element {
+      max-width: 320px;
+  }
+}

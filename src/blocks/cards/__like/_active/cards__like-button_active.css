@@ -1,0 +1,4 @@
+.cards__like-button_active {
+  background: url(../../../../images/likeactive.svg);
+  background-repeat: no-repeat;
+}

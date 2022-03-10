@@ -1,0 +1,18 @@
+.popup__input_type_error { 
+  border-bottom: 1px solid red;
+}
+
+.popup__input-error {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  opacity: 0;
+  color: #FF0000;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+} 
+
+.popup__input-error_active { 
+  opacity: 1;
+}

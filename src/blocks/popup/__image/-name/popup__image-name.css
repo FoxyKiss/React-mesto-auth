@@ -1,0 +1,8 @@
+.popup__image-name {
+  max-width: 75vw;
+  width: 100%;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  margin: 10px 0 0 0;
+}

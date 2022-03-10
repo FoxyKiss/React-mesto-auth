@@ -1,0 +1,8 @@
+.button_inactive { 
+  color:  #000000;
+  border: 1px solid  #000000;
+  opacity: 0.2;
+  background: #ffff;
+  pointer-events: none;
+  user-select: none;
+}
