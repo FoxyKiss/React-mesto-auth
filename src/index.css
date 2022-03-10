@@ -59,3 +59,12 @@
 @import url(./blocks/popup/__change/popup__change-avatar.css);
 @import url(./blocks/popup/_open/popup_open.css);
 @import url(./blocks/hide/hide_delete-button.css);
+
+/* AUTHENTICATION */
+@import url(./blocks/auth-container/auth-container.css);
+@import url(./blocks/auth-container/__title/auth-container__title.css);
+@import url(./blocks/auth-form/auth-form.css);
+@import url(./blocks/auth-form/__input/auth-form__input.css);
+@import url(./blocks/auth-form/__label/auth-form__label.css);
+@import url(./blocks/auth-form/__sentence/auth-form__sentence.css);
+@import url(./blocks/auth-form/__submit/auth-form__submit.css);

@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 //? Импорты компонентов
 import Header from './Header'
 import Main from './Main'
@@ -8,12 +9,16 @@ import EditProfilePopup from './popupEditInfo/EditProfilePopup'
 import EditAvatarPopup from './popupEditInfo/EditAvatarPopup'
 import AddCardPopup from './popupEditInfo/AddCardPopup'
 import DeleteCardPopup from './popupEditInfo/DeleteCardPopup'
-
+//? Импорт компонентов аутентификации
+import Login from './authComponents/Login'
+import Register from './authComponents/Register'
+import ProtectedRoute from './authComponents/ProtectedRoute'
+import InfoTooltip from './authComponents/InfoTooltip'
 //? Импорт контекста
 import { currentUserContext } from '../contexts/currentUserContext'
 
-//? Импорт компонента api
-import api from '../utils/Api'
+//? Импорт компонента cardApi
+import cardApi from '../utils/CardApi'
 
 function App() {
   //? State переменные для активации модалок
@@ -29,7 +34,8 @@ function App() {
   const [cardsList, setCardsList] = React.useState([]);
   //? State переменная для получения id карточки
   const [cardDeleteId, setCardDeleteId] = React.useState('')
-
+  //? State переменная статуса авторизации
+  const [loggedIn, setLoggedIn] = React.useState(true)
   //? Функции изменения стейтов для модалок
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -78,7 +84,7 @@ function App() {
 
   //?Изменение state переменной для получения информации о пользователе и массива карточек
   React.useEffect(() => {
-    Promise.all([api.getInfo(), api.getStartCards()])
+    Promise.all([cardApi.getInfo(), cardApi.getStartCards()])
       .then(([info, cardsList]) => {
         setCurrentUser(info);
         setCardsList(cardsList);
@@ -87,7 +93,7 @@ function App() {
 
   //? Функция удаления карточки
   function handleCardDelete(cardId) {
-    api.deleteCard(cardId)
+    cardApi.deleteCard(cardId)
       .then(() => {
         setCardsList(cardsList.filter((item) => {
           return item._id !== cardId
@@ -100,11 +106,11 @@ function App() {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
     if (!isLiked) {
-      api.activeLike(card).then((newCard) => {
+      cardApi.activeLike(card).then((newCard) => {
         setCardsList((state) => state.map((c) => c._id === card._id ? newCard : c));
       }).catch(err => console.log(`Ошибка: ${err.status}`));;
     } else {
-      api.deactiveLike(card).then((newCard) => {
+      cardApi.deactiveLike(card).then((newCard) => {
         setCardsList((state) => state.map((c) => c._id === card._id ? newCard : c));
       }).catch(err => console.log(`Ошибка: ${err.status}`));;
     }
@@ -112,7 +118,7 @@ function App() {
 
   //? Обработчики изменения данных
   function handleUpdateUser(data) {
-    api.setInfo(data)
+    cardApi.setInfo(data)
       .then((info) => {
         setCurrentUser(info);
         closeAllPopups()
@@ -120,7 +126,7 @@ function App() {
   }
 
   function handleUpdateAvatar(data) {
-    api.setAvatar(data)
+    cardApi.setAvatar(data)
       .then((info) => {
         setCurrentUser((user) => ({ ...user, avatar: info.avatar }))
         closeAllPopups()
@@ -128,7 +134,7 @@ function App() {
   }
 
   function handleAddCard(data) {
-    api.postCard(data)
+    cardApi.postCard(data)
       .then((newCard) => {
         setCardsList([newCard, ...cardsList]);
         closeAllPopups()
@@ -144,19 +150,35 @@ function App() {
 
   //? Разметка страницы
   return (
-    <div className="page">
-      <currentUserContext.Provider value={currentUser}>
-        <Header />
-        <Main cardProps={cardProps} onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick} onDeleteClick={handleDeleteCardClick} />
-        <Footer />
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-        <AddCardPopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-        <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} cardId={cardDeleteId} />
-        <ImagePopup card={selectedCard} isOpen={imagePopupOpen} onClose={closeAllPopups} />
-      </currentUserContext.Provider>
-    </div >
+    <BrowserRouter>
+      <div className="page">
+        <currentUserContext.Provider value={currentUser}>
+          <Header />
+          <Switch>
+            <ProtectedRoute
+              path="/main"
+              loggedIn={loggedIn}
+              component={Main}
+              cardProps={cardProps}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              onDeleteClick={handleDeleteCardClick}
+            />
+            <Route path="/sign-in"><Login /></Route>
+            <Route path="/sign-up"><Register /></Route>
+            <Route path="/"> {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}</Route>
+          </Switch >
+          <Footer />
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+          <AddCardPopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+          <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} cardId={cardDeleteId} />
+          <ImagePopup card={selectedCard} isOpen={imagePopupOpen} onClose={closeAllPopups} />
+        </currentUserContext.Provider>
+      </div >
+    </BrowserRouter>
   );
 }
 

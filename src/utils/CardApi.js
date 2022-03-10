@@ -1,5 +1,5 @@
 //? Класс с запросами для отрисовки карт и получения информации профиля.
-class Api {
+class CardApi {
   constructor(baseUrl, token) {
     this._baseUrl = baseUrl
     this._token = token
@@ -108,6 +108,6 @@ class Api {
     }).then(this._checkResponse)
   }
 }
-const api = new Api('https://mesto.nomoreparties.co/v1/cohort-34', '89a2c951-8971-4216-9141-16ef211258eb')
+const cardApi = new CardApi('https://mesto.nomoreparties.co/v1/cohort-34', '89a2c951-8971-4216-9141-16ef211258eb')
 
-export default api
+export default cardApi
