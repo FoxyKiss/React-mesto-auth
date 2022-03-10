@@ -13,7 +13,6 @@ import DeleteCardPopup from './popupEditInfo/DeleteCardPopup'
 import Login from './authComponents/Login'
 import Register from './authComponents/Register'
 import ProtectedRoute from './authComponents/ProtectedRoute'
-import InfoTooltip from './authComponents/InfoTooltip'
 //? Импорт контекста
 import { currentUserContext } from '../contexts/currentUserContext'
 
@@ -35,7 +34,7 @@ function App() {
   //? State переменная для получения id карточки
   const [cardDeleteId, setCardDeleteId] = React.useState('')
   //? State переменная статуса авторизации
-  const [loggedIn, setLoggedIn] = React.useState(true)
+  const [loggedIn, setLoggedIn] = React.useState(false)
   //? Функции изменения стейтов для модалок
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
