@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function AuthForm({ formProps }) {
   return (
     <div className="auth-container">
@@ -12,7 +14,7 @@ function AuthForm({ formProps }) {
             minLength="2" maxLength="200" />
         </label>
         <button className="auth-form__submit" type="submit">{formProps.buttonText}</button>
-        <span className="auth-form__sentence">{formProps.sentence}</span>
+        <Link to="/login" className="auth-form__sentence">{formProps.sentence}</Link>
       </form >
     </div >
   );
