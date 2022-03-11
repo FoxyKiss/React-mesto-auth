@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, useHistory } from 'react-router-dom';
+
 //? Импорты компонентов
 import Header from './Header'
 import Main from './Main'
@@ -18,6 +19,8 @@ import { currentUserContext } from '../contexts/currentUserContext'
 
 //? Импорт компонента cardApi
 import cardApi from '../utils/CardApi'
+//? Импорт компонента ауэтентификации
+import { BASE_URL, register } from '../utils/Auth'
 
 function App() {
   //? State переменные для активации модалок
@@ -140,6 +143,18 @@ function App() {
       }).catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
+  //? Обработчики ауэтентификации
+
+  let history = useHistory()
+  function handleRegister(password, email) {
+    register(password, email)
+      .then((res) => {
+        if (res) {
+          history.push('/sign-in')
+        }
+      }).catch(err => console.log(`Ошибка: Пользователь с таким email уже зарегистрирован`));
+  }
+
   //? Свойства card для передачи в Main
   const cardProps = {
     cardsList: cardsList,
@@ -149,35 +164,35 @@ function App() {
 
   //? Разметка страницы
   return (
-    <BrowserRouter>
-      <div className="page">
-        <currentUserContext.Provider value={currentUser}>
-          <Header />
-          <Switch>
-            <ProtectedRoute
-              path="/main"
-              loggedIn={loggedIn}
-              component={Main}
-              cardProps={cardProps}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              onDeleteClick={handleDeleteCardClick}
-            />
-            <Route path="/sign-in"><Login /></Route>
-            <Route path="/sign-up"><Register /></Route>
-            <Route path="/"> {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}</Route>
-          </Switch >
-          <Footer />
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-          <AddCardPopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-          <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} cardId={cardDeleteId} />
-          <ImagePopup card={selectedCard} isOpen={imagePopupOpen} onClose={closeAllPopups} />
-        </currentUserContext.Provider>
-      </div >
-    </BrowserRouter>
+
+    <div className="page">
+      <currentUserContext.Provider value={currentUser}>
+        <Header />
+        <Switch>
+          <ProtectedRoute
+            path="/main"
+            loggedIn={loggedIn}
+            component={Main}
+            cardProps={cardProps}
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            onCardClick={handleCardClick}
+            onDeleteClick={handleDeleteCardClick}
+          />
+          <Route path="/sign-in"><Login /></Route>
+          <Route path="/sign-up"><Register handleRegister={handleRegister} /></Route>
+          <Route path="/"> {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}</Route>
+        </Switch >
+        <Footer />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+        <AddCardPopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddCard={handleAddCard} />
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+        <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} cardId={cardDeleteId} />
+        <ImagePopup card={selectedCard} isOpen={imagePopupOpen} onClose={closeAllPopups} />
+      </currentUserContext.Provider>
+    </div >
+
   );
 }
 
