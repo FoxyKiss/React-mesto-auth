@@ -1,7 +1,7 @@
 import React from 'react'
-
 import AuthForm from '../AuthForm'
-function Login() {
+
+function Login({ handleAuthorize }) {
   //? State переменные для передачи данных входа
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -9,7 +9,10 @@ function Login() {
 
   function handleSubmit(evt) {
     evt.preventDefault()
-    console.log(email, password)
+
+    handleAuthorize(password, email)
+    setEmail('')
+    setPassword('')
   }
 
   const formProps = {

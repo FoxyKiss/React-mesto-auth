@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
 //? Импорты компонентов
 import Header from './Header'
@@ -20,7 +20,7 @@ import { currentUserContext } from '../contexts/currentUserContext'
 //? Импорт компонента cardApi
 import cardApi from '../utils/CardApi'
 //? Импорт компонента ауэтентификации
-import { BASE_URL, register } from '../utils/Auth'
+import { BASE_URL, register, authorize, checkToken } from '../utils/Auth'
 
 function App() {
   //? State переменные для активации модалок
@@ -143,9 +143,24 @@ function App() {
       }).catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
-  //? Обработчики ауэтентификации
 
+  //? Провекра токена при монтировании
+  React.useEffect(() => {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true)
+            history.push('/main')
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  })
+  //? Обработчики ауэтентификации
   let history = useHistory()
+
   function handleRegister(password, email) {
     register(password, email)
       .then((res) => {
@@ -153,6 +168,16 @@ function App() {
           history.push('/sign-in')
         }
       }).catch(err => console.log(`Ошибка: Пользователь с таким email уже зарегистрирован`));
+  }
+
+  function handleAuthorize(password, email) {
+    authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          setLoggedIn(true)
+          history.push('/main');
+        }
+      }).catch(err => console.log(err));
   }
 
   //? Свойства card для передачи в Main
@@ -180,7 +205,7 @@ function App() {
             onCardClick={handleCardClick}
             onDeleteClick={handleDeleteCardClick}
           />
-          <Route path="/sign-in"><Login /></Route>
+          <Route path="/sign-in"><Login handleAuthorize={handleAuthorize} /></Route>
           <Route path="/sign-up"><Register handleRegister={handleRegister} /></Route>
           <Route path="/"> {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}</Route>
         </Switch >

@@ -1,5 +1,6 @@
 import React from 'react'
 import AuthForm from '../AuthForm'
+
 function Register({ handleRegister }) {
   //? State переменные для передачи данных входа
   const [email, setEmail] = React.useState('')
