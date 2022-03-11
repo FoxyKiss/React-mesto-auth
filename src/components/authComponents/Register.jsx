@@ -1,5 +1,16 @@
+import React from 'react'
 import AuthForm from '../AuthForm'
 function Register() {
+  //? State переменные для передачи данных входа
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const registerInfo = { email, setEmail, password, setPassword }
+
+  function handleSubmit(evt) {
+    evt.preventDefault()
+    console.log(email, password)
+  }
+
   const formProps = {
     formId: 'signUpForm',
     buttonText: 'Зарегистрироваться',
@@ -7,7 +18,7 @@ function Register() {
     sentence: 'Уже зарегистрированы? Войти'
   }
   return (
-    <AuthForm formProps={formProps} />
+    <AuthForm authInfo={registerInfo} formProps={formProps} onSubmit={handleSubmit} />
   );
 }
 
