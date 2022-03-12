@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
+
 //? Импорты компонентов
 import Header from './Header'
 import Main from './Main'
@@ -46,6 +47,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false)
   //? State переменная Email профиля
   const [emailProfile, setEmailProfile] = React.useState('')
+
   //? Функции изменения стейтов для модалок
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -204,9 +206,11 @@ function App() {
   }
 
   function handleSignOut() {
+    setEmailProfile('')
     localStorage.removeItem('jwt');
     history.push('/sign-in');
   }
+
 
   //? Проверка токена при монтировании
   React.useEffect(() => {
@@ -220,7 +224,7 @@ function App() {
             history.push('/main')
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     }
   })
 
