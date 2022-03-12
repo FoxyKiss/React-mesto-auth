@@ -19,7 +19,7 @@ function AuthForm({ formProps, authInfo, onSubmit }) {
         </label>
         <label className="auth-form__label popup__input-label">
           <input id="paswword" name="password" className="auth-form__input " type="password" placeholder="Пароль" required
-            minLength="2" maxLength="200" value={authInfo.password} onChange={setPassword} />
+            minLength="2" maxLength="200" autoComplete="off" value={authInfo.password} onChange={setPassword} />
         </label>
         <button className="auth-form__submit" type="submit">{formProps.buttonText}</button>
         <Link to="/login" className="auth-form__sentence">{formProps.sentence}</Link>

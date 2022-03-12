@@ -2,6 +2,9 @@
   max-width: 880px;
   width: 100%;
   min-height: 74px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   overflow: hidden;
   background: url(../../images/logo.svg);
   background-repeat: no-repeat;

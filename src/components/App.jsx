@@ -38,6 +38,8 @@ function App() {
   const [cardDeleteId, setCardDeleteId] = React.useState('')
   //? State переменная статуса авторизации
   const [loggedIn, setLoggedIn] = React.useState(false)
+  //? State переменная Email профиля
+  const [emailProfile, setEmailProfile] = React.useState('')
   //? Функции изменения стейтов для модалок
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -143,21 +145,6 @@ function App() {
       }).catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
-
-  //? Провекра токена при монтировании
-  React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
-      checkToken(jwt)
-        .then((res) => {
-          if (res) {
-            setLoggedIn(true)
-            history.push('/main')
-          }
-        })
-        .catch(err => console.log(err));
-    }
-  })
   //? Обработчики ауэтентификации
   let history = useHistory()
 
@@ -180,6 +167,29 @@ function App() {
       }).catch(err => console.log(err));
   }
 
+  function handleSignOut() {
+    localStorage.removeItem('jwt');
+    history.push('/sign-in');
+  }
+
+  //? Проверка токена при монтировании
+  React.useEffect(() => {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true)
+            setEmailProfile(res.data.email)
+            history.push('/main')
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  })
+
+
+
   //? Свойства card для передачи в Main
   const cardProps = {
     cardsList: cardsList,
@@ -192,7 +202,7 @@ function App() {
 
     <div className="page">
       <currentUserContext.Provider value={currentUser}>
-        <Header />
+        <Header signOut={handleSignOut} email={emailProfile} />
         <Switch>
           <ProtectedRoute
             path="/main"
