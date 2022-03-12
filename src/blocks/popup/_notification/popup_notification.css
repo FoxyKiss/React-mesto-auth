@@ -1,0 +1,11 @@
+.popup_notification {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.popup_notification-image {
+  max-width: 120px;
+  width: 100%;
+  min-height: 120px;
+  margin-top: 60px;
+}

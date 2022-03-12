@@ -10,6 +10,7 @@ import EditProfilePopup from './popupEditInfo/EditProfilePopup'
 import EditAvatarPopup from './popupEditInfo/EditAvatarPopup'
 import AddCardPopup from './popupEditInfo/AddCardPopup'
 import DeleteCardPopup from './popupEditInfo/DeleteCardPopup'
+import InfoToolTip from './authComponents/InfoToolTip'
 //? Импорт компонентов аутентификации
 import Login from './authComponents/Login'
 import Register from './authComponents/Register'
@@ -19,8 +20,12 @@ import { currentUserContext } from '../contexts/currentUserContext'
 
 //? Импорт компонента cardApi
 import cardApi from '../utils/CardApi'
-//? Импорт компонента ауэтентификации
-import { BASE_URL, register, authorize, checkToken } from '../utils/Auth'
+//? Импорт функций аутентификации
+import { register, authorize, checkToken } from '../utils/Auth'
+
+//? Импорт изображения для уведомления о регистрации
+import errorImage from '../images/error.png'
+import completeImage from '../images/complete.png'
 
 function App() {
   //? State переменные для активации модалок
@@ -29,6 +34,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [imagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setDeleteCardPopupOpen] = React.useState(false)
+  const [notificationPopupOpen, setNotificationPopupOpen] = React.useState(false)
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' })
   //? State переменная для получения информации о пользователе
   const [currentUser, setCurrentUser] = React.useState({ name: '', about: '', avatar: '' })
@@ -80,6 +86,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setAddPlacePopupOpen(false);
     setImagePopupOpen(false);
+    setNotificationPopupOpen(false)
     setDeleteCardPopupOpen(false);
     setSelectedCard({ name: '', link: '' });
     setCardDeleteId('')
@@ -148,13 +155,42 @@ function App() {
   //? Обработчики ауэтентификации
   let history = useHistory()
 
+  const [notificationInfo, setNotificationInfo] = React.useState({
+    image: '',
+    alt: '',
+    title: ''
+  })
+  //? Функция выдачи ошибки при регистрации
+  function infoToolTip(status) {
+    if (status) {
+      setNotificationInfo({
+        image: completeImage,
+        alt: 'Регистрация прошла успешно',
+        title: 'Вы успешно зарегистрировались!'
+      })
+      setNotificationPopupOpen(true)
+    } else {
+      setNotificationInfo({
+        image: errorImage,
+        alt: 'Что-то пошло не так!',
+        title: 'Что-то пошло не так! Попробуйте ещё раз.'
+      })
+      setNotificationPopupOpen(true)
+    }
+  }
+
+
   function handleRegister(password, email) {
     register(password, email)
       .then((res) => {
         if (res) {
+          infoToolTip(true)
           history.push('/sign-in')
         }
-      }).catch(err => console.log(`Ошибка: Пользователь с таким email уже зарегистрирован`));
+      }).catch((err) => {
+        infoToolTip(false)
+        console.log(`Ошибка: Пользователь с таким email уже зарегистрирован`)
+      });
   }
 
   function handleAuthorize(password, email) {
@@ -225,6 +261,7 @@ function App() {
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
         <DeleteCardPopup isOpen={isDeleteCardPopupOpen} onClose={closeAllPopups} onCardDelete={handleCardDelete} cardId={cardDeleteId} />
         <ImagePopup card={selectedCard} isOpen={imagePopupOpen} onClose={closeAllPopups} />
+        <InfoToolTip notification={notificationInfo} isOpen={notificationPopupOpen} onClose={closeAllPopups} />
       </currentUserContext.Provider>
     </div >
 

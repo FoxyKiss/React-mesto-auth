@@ -1,6 +1,6 @@
 import React from 'react'
 import AuthForm from '../AuthForm'
-
+import InfoToolTip from './InfoToolTip'
 function Register({ handleRegister }) {
   //? State переменные для передачи данных входа
   const [email, setEmail] = React.useState('')

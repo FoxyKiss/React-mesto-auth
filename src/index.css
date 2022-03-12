@@ -59,6 +59,7 @@
 @import url(./blocks/popup/__title/_delete/popup__title_delete.css);
 @import url(./blocks/popup/__delete/popup__delete_card.css);
 @import url(./blocks/popup/__change/popup__change-avatar.css);
+@import url(./blocks/popup/_notification/popup_notification.css);
 @import url(./blocks/popup/_open/popup_open.css);
 @import url(./blocks/hide/hide_delete-button.css);
 

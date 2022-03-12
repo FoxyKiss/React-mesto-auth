@@ -7,6 +7,11 @@
   margin: 34px 64px 54px 36px;
 }
 
+.popup__title_notification {
+  text-align: center;
+  margin: 32px 36px 60px 36px;
+}
+
 @media screen and (max-width:600px) {
   .popup__title {
       max-width: 238px;
