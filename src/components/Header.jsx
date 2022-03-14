@@ -4,7 +4,7 @@ export default function Header({ signOut, email }) {
   return (
     <header className="header">
       <p className="header__email">{email}</p>
-      <Route exact path="/main">
+      <Route exact path="/">
         <button onClick={signOut} className='header__auth-link'>Выйти</button>
       </Route>
       <Route path="/sign-in">

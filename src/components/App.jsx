@@ -204,7 +204,7 @@ function App() {
         if (data.token) {
           setLoggedIn(true)
           setEmailProfile(email)
-          history.push('/main');
+          history.push('/');
         }
       }).catch(err => console.log(err));
   }
@@ -217,15 +217,15 @@ function App() {
 
 
   //? Проверка токена при монтировании
+  const jwt = localStorage.getItem('jwt');
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
       checkToken(jwt)
         .then((res) => {
           if (res) {
             setLoggedIn(true)
             setEmailProfile(res.data.email)
-            history.push('/main')
+            history.push('/')
           }
         })
         .catch((err) => console.log(err));
@@ -249,7 +249,7 @@ function App() {
         <Header signOut={handleSignOut} email={emailProfile} />
         <Switch>
           <ProtectedRoute
-            path="/main"
+            exact path="/"
             loggedIn={loggedIn}
             component={Main}
             cardProps={cardProps}
@@ -261,7 +261,6 @@ function App() {
           />
           <Route path="/sign-in"><Login handleAuthorize={handleAuthorize} /></Route>
           <Route path="/sign-up"><Register handleRegister={handleRegister} /></Route>
-          <Route path="/"> {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}</Route>
         </Switch >
         <Footer />
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
