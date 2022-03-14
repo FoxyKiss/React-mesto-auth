@@ -1,6 +1,6 @@
 import React from "react";
 import PopUpWithForm from "../PopupWithForm";
-import { CardPopup } from '../popupsMarkup/popupsMarkup'
+import CardPopup from '../popupsMarkup/CardPopup'
 
 export default function AddCardPopup({ isOpen, onClose, onAddCard }) {
   //?State переменные для полей ввода

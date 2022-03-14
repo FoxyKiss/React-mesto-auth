@@ -1,6 +1,6 @@
 import React from 'react'
 import PopUpWithForm from '../PopupWithForm'
-import { ProfilePopup } from '../popupsMarkup/popupsMarkup'
+import ProfilePopup from '../popupsMarkup/ProfilePopup'
 import { currentUserContext } from '../../contexts/currentUserContext'
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
@@ -15,7 +15,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
   //? Функция отправки формы
   function handleSubmit(evt) {

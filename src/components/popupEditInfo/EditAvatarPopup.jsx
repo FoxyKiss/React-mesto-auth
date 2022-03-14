@@ -1,6 +1,6 @@
 import React from 'react'
 import PopUpWithForm from '../PopupWithForm'
-import { AvatarPopup } from '../popupsMarkup/popupsMarkup'
+import AvatarPopup from '../popupsMarkup/AvatarPopup'
 export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   //? Создание рефа
   const avatarRef = React.useRef({})
