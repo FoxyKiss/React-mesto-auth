@@ -201,6 +201,7 @@ function App() {
       .then((data) => {
         if (data.token) {
           setLoggedIn(true)
+          setEmailProfile(email)
           history.push('/main');
         }
       }).catch(err => console.log(err));
