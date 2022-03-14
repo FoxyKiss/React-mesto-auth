@@ -1,18 +1,6 @@
 import React from 'react'
 
 export default function PopUpWithForm({ formProps, isOpen, onClose, children, onSubmit }) {
-  //? Закрытие модалки при клике на оверлей
-  React.useEffect(() => {
-    function clickOverlayClose(evt) {
-      if (evt.target.classList.contains('popup_open')) {
-        onClose()
-      }
-    }
-    document.addEventListener("click", clickOverlayClose);
-
-    return () => document.removeEventListener("click", clickOverlayClose);
-  }, [])
-
   //? Основная разметка Popup
   return (
     <div className={`popup popup_${formProps.name} ${isOpen && 'popup_open'} `}>

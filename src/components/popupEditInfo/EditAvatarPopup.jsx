@@ -1,6 +1,6 @@
 import React from 'react'
 import PopUpWithForm from '../PopupWithForm'
-import AvatarPopup from '../popupsMarkup/AvatarPopup'
+
 export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   //? Создание рефа
   const avatarRef = React.useRef({})
@@ -25,7 +25,10 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
   //? Разметка AvatarPopup
   return (
     <PopUpWithForm formProps={formProps} isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit} >
-      <AvatarPopup avatarRef={avatarRef} />
+      <label className="popup__input-label">
+        <input ref={avatarRef} id="avatarLink" name="avatar" className="popup__input" type="url" placeholder="Введите ссылку" required />
+        <span className="popup__input-error avatarLink-error"></span>
+      </label>
     </PopUpWithForm>
   );
 }

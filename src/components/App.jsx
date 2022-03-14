@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 
 //? Импорты компонентов
@@ -94,6 +94,18 @@ function App() {
 
     return () => document.removeEventListener("keydown", handleEscClose);
   }, []);
+
+  //? Закрытие модалки при клике на оверлей
+  React.useEffect(() => {
+    function clickOverlayClose(evt) {
+      if (evt.target.classList.contains('popup_open')) {
+        closeAllPopups();
+      }
+    }
+    document.addEventListener("click", clickOverlayClose);
+
+    return () => document.removeEventListener("click", clickOverlayClose);
+  }, [])
 
 
   //?Изменение state переменной для получения информации о пользователе и массива карточек
@@ -217,7 +229,6 @@ function App() {
 
 
   //? Проверка токена при монтировании
-  const jwt = localStorage.getItem('jwt');
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
       checkToken(jwt)
@@ -231,6 +242,8 @@ function App() {
         .catch((err) => console.log(err));
     }
   })
+
+  const jwt = localStorage.getItem('jwt');
 
 
 
