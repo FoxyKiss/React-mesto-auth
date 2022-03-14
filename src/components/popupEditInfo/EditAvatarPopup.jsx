@@ -11,8 +11,7 @@ export default function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
 
     onUpdateAvatar({
       avatar: avatarRef.current.value,
-    })
-    evt.target.reset()
+    }, evt)
   }
 
   //? Свойства формы

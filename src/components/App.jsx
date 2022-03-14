@@ -139,17 +139,19 @@ function App() {
       }).catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
-  function handleUpdateAvatar(data) {
+  function handleUpdateAvatar(data, evt) {
     cardApi.setAvatar(data)
       .then((info) => {
+        evt.target.reset()
         setCurrentUser((user) => ({ ...user, avatar: info.avatar }))
         closeAllPopups()
       }).catch(err => console.log(`Ошибка: ${err.status}`));
   }
 
-  function handleAddCard(data) {
+  function handleAddCard(data, evt) {
     cardApi.postCard(data)
       .then((newCard) => {
+        evt.target.reset()
         setCardsList([newCard, ...cardsList]);
         closeAllPopups()
       }).catch(err => console.log(`Ошибка: ${err.status}`));

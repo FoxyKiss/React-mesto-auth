@@ -15,8 +15,7 @@ export default function AddCardPopup({ isOpen, onClose, onAddCard }) {
     onAddCard({
       name,
       link,
-    });
-    evt.target.reset()
+    }, evt);
     setName('')
     setLink('')
   }
