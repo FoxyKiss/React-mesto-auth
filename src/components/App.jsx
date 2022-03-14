@@ -48,39 +48,28 @@ function App() {
   //? State переменная Email профиля
   const [emailProfile, setEmailProfile] = React.useState('')
 
+
   //? Функции изменения стейтов для модалок
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
-    document.addEventListener('keydown', handleEscClose)
   }
 
   function handleAddPlaceClick() {
     setAddPlacePopupOpen(true);
-    document.addEventListener('keydown', handleEscClose)
   }
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(true);
-    document.addEventListener('keydown', handleEscClose)
   }
 
   function handleCardClick(name, link) {
     setSelectedCard({ name, link });
     setImagePopupOpen(true);
-    document.addEventListener('keydown', handleEscClose)
   }
 
   function handleDeleteCardClick(id) {
     setDeleteCardPopupOpen(true);
     setCardDeleteId(id)
-    document.addEventListener('keydown', handleEscClose)
-  }
-
-  //? Функции закрытия модалок
-  function handleEscClose(evt) {
-    if (evt.key === 'Escape') {
-      closeAllPopups()
-    }
   }
 
   function closeAllPopups() {
@@ -92,8 +81,20 @@ function App() {
     setDeleteCardPopupOpen(false);
     setSelectedCard({ name: '', link: '' });
     setCardDeleteId('')
-    document.removeEventListener('keydown', handleEscClose)
   }
+
+  React.useEffect(() => {
+    const handleEscClose = (evt) => {
+      if (evt.key === "Escape") {
+        closeAllPopups();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => document.removeEventListener("keydown", handleEscClose);
+  }, []);
+
 
   //?Изменение state переменной для получения информации о пользователе и массива карточек
   React.useEffect(() => {
